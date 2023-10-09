@@ -2,6 +2,8 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -27,4 +29,23 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    public function render($request, Throwable $exception)
+    {
+        // Jika pengecualian adalah ModelNotFoundException
+        if ($exception instanceof ModelNotFoundException) {
+            return response()->json(['error' => 'Data tidak ditemukan'], 404);
+        }
+
+        if ($exception instanceof QueryException && $exception->errorInfo[1] == 1062) {
+            return response()->json(['error' => 'Judul sudah ada'], 422);
+        }
+        if (str_contains($exception->getMessage(), "Field 'title' doesn't have a default value")) {
+            return response()->json(['error' => 'Judul tidak boleh kosong'], 422);
+        }
+
+
+        return parent::render($request, $exception);
+    }
+
 }
