@@ -77,7 +77,9 @@ class beritaController extends Controller
 
         File::put($jsonFile, json_encode($jsonData));
 
-
+        exec('git add .');
+        exec('git commit -m "Pesan commit otomatis"');
+        exec('git push origin main');
 
 
 
