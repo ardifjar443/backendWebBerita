@@ -72,6 +72,11 @@ class beritaController extends Controller
             'deskripsi' => $request->deskripsi,
             'content' => $request->content,
             'foto' => '/images/' . $imageName,
+            'created_at' => now()->toDateTimeString(),
+            // Waktu pembuatan
+            'updated_at' => now()->toDateTimeString(),
+            // Waktu pembaruan
+
 
         ];
 
