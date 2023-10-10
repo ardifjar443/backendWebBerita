@@ -10,34 +10,57 @@ class beritaController extends Controller
 {
     public function index()
     {
-        return Berita::all();
+        $beritas = Berita::orderBy('created_at', 'desc')->get();
+
+        // foreach ($beritas as $berita) {
+        //     $fotoBlob = $berita->foto;
+        //     $fotoBase64 = base64_encode($fotoBlob);
+        //     $berita->foto = $fotoBase64;
+        // }
+
+        return response()->json($beritas, 200);
     }
 
     public function show($id)
     {
         return Berita::find($id);
+
+
     }
 
     public function store(Request $request)
     {
         $request->validate([
+            'author' => 'required',
             'title' => 'required',
             'deskripsi' => 'required',
+            'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+        $imageName = time() . '.' . $request->foto->extension();
 
-        $user = auth()->user(); // Mendapatkan pengguna yang terotentikasi
-        $author = $user->name; // Mengambil nama pengguna sebagai penulis
+        $request->foto->move(public_path('images'), $imageName);
+
+
+        // $user = auth()->user(); // Mendapatkan pengguna yang terotentikasi
+        // $author = $user->name; // Mengambil nama pengguna sebagai penulis
 
         $berita = new Berita([
             'title' => $request->title,
-            'author' => $author,
+            'author' => $request->author,
             // Menggunakan nama pengguna sebagai penulis
             'deskripsi' => $request->deskripsi,
+            'content' => $request->content,
+            'foto' => '/images/' . $imageName,
+
         ]);
 
-        $user->beritas()->save($berita);
+        $berita->save();
 
-        return response()->json($berita, 201);
+
+
+
+        return response()->json(201);
+
     }
 
 

@@ -5,7 +5,9 @@ namespace App\Exceptions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
 use Throwable;
+
 
 class Handler extends ExceptionHandler
 {
@@ -46,6 +48,13 @@ class Handler extends ExceptionHandler
 
 
         return parent::render($request, $exception);
+    }
+    protected function invalid($request, ValidationException $exception)
+    {
+        return response()->json([
+            'message' => 'The given data was invalid.',
+            'errors' => $exception->errors(),
+        ], $exception->status);
     }
 
 }

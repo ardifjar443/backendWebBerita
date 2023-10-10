@@ -15,6 +15,8 @@ return new class extends Migration {
             $table->string('title')->nullable(false)->unique();
             $table->string('author');
             $table->string('deskripsi');
+            $table->string('content')->nullable();
+            $table->binary('foto')->nullable();
             $table->timestamps();
         });
     }
