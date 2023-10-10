@@ -58,7 +58,7 @@ class beritaController extends Controller
 
         $berita->save();
 
-        $jsonFile = storage_path('app/data.json');
+        $jsonFile = public_path('data/data.json');
 
         $jsonData = [];
         if (File::exists($jsonFile)) {
