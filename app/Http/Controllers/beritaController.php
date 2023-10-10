@@ -6,6 +6,7 @@ use App\Models\Berita;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class beritaController extends Controller
 {
@@ -66,6 +67,7 @@ class beritaController extends Controller
         }
 
         $jsonData[] = [
+            'id' => Str::uuid()->toString(),
             'title' => $request->title,
             'author' => $request->author,
             // Menggunakan nama pengguna sebagai penulis
