@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Berita;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class beritaController extends Controller
 {
@@ -54,7 +55,28 @@ class beritaController extends Controller
 
         ]);
 
+
         $berita->save();
+
+        $jsonFile = storage_path('app/data.json');
+
+        $jsonData = [];
+        if (File::exists($jsonFile)) {
+            $jsonData = json_decode(File::get($jsonFile), true);
+        }
+
+        $jsonData[] = [
+            'title' => $request->title,
+            'author' => $request->author,
+            // Menggunakan nama pengguna sebagai penulis
+            'deskripsi' => $request->deskripsi,
+            'content' => $request->content,
+            'foto' => '/images/' . $imageName,
+
+        ];
+
+        File::put($jsonFile, json_encode($jsonData));
+
 
 
 
