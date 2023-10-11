@@ -17,6 +17,9 @@ return new class extends Migration {
             $table->string('deskripsi');
             $table->text('content')->nullable();
             $table->binary('foto')->nullable();
+            $table->binary('foto1')->nullable();
+            $table->binary('foto2')->nullable();
+            $table->binary('foto3')->nullable();
             $table->timestamps();
         });
     }

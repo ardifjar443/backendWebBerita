@@ -37,6 +37,9 @@ class beritaController extends Controller
             'title' => 'required',
             'deskripsi' => 'required',
             'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'foto1' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'foto2' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'foto3' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
         $imageName = time() . '.' . $request->foto->extension();
 
@@ -53,6 +56,9 @@ class beritaController extends Controller
             'deskripsi' => $request->deskripsi,
             'content' => $request->content,
             'foto' => '/images/' . $imageName,
+            'foto1' => '/images/' . $imageName,
+            'foto2' => '/images/' . $imageName,
+            'foto3' => '/images/' . $imageName,
 
         ]);
 
