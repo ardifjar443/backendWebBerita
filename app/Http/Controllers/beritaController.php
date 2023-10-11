@@ -41,10 +41,29 @@ class beritaController extends Controller
             'foto2' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'foto3' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-        $imageName = time() . '.' . $request->foto->extension();
-
-        $request->foto->move(public_path('images'), $imageName);
-
+        $imageName = null;
+        if ($request->hasFile('foto')) {
+            $imageName = time() . '.' . $request->foto->extension();
+            $request->foto->move(public_path('images'), $imageName);
+        }
+    
+        $imageName1 = null;
+        if ($request->hasFile('foto1')) {
+            $imageName1 = time() . 'foto1.' . $request->foto1->extension();
+            $request->foto1->move(public_path('images'), $imageName1);
+        }
+    
+        $imageName2 = null;
+        if ($request->hasFile('foto2')) {
+            $imageName2 = time() . 'foto2.' . $request->foto2->extension();
+            $request->foto2->move(public_path('images'), $imageName2);
+        }
+    
+        $imageName3 = null;
+        if ($request->hasFile('foto3')) {
+            $imageName3 = time() . 'foto3.' . $request->foto3->extension();
+            $request->foto3->move(public_path('images'), $imageName3);
+        }
 
         // $user = auth()->user(); // Mendapatkan pengguna yang terotentikasi
         // $author = $user->name; // Mengambil nama pengguna sebagai penulis
@@ -56,9 +75,9 @@ class beritaController extends Controller
             'deskripsi' => $request->deskripsi,
             'content' => $request->content,
             'foto' => '/images/' . $imageName,
-            'foto1' => '/images/' . $imageName,
-            'foto2' => '/images/' . $imageName,
-            'foto3' => '/images/' . $imageName,
+            'foto1' => '/images/' . $imageName1,
+            'foto2' => '/images/' . $imageName2,
+            'foto3' => '/images/' . $imageName3,
 
         ]);
 
@@ -80,6 +99,9 @@ class beritaController extends Controller
             'deskripsi' => $request->deskripsi,
             'content' => $request->content,
             'foto' => '/images/' . $imageName,
+            'foto1' => '/images/' . $imageName1,
+            'foto2' => '/images/' . $imageName2,
+            'foto3' => '/images/' . $imageName3,
             'created_at' => now()->toDateTimeString(),
             // Waktu pembuatan
             'updated_at' => now()->toDateTimeString(),
@@ -96,7 +118,7 @@ class beritaController extends Controller
 
 
 
-        return response()->json(201);
+        return response()->json($berita);
 
     }
 
