@@ -32,95 +32,112 @@ class beritaController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'author' => 'required',
-            'title' => 'required',
-            'deskripsi' => 'required',
-            'foto' => 'image|mimes:jpeg,png,jpg,gif',
-            'foto1' => 'image|mimes:jpeg,png,jpg,gif',
-            'foto2' => 'image|mimes:jpeg,png,jpg,gif',
-            'foto3' => 'image|mimes:jpeg,png,jpg,gif',
-        ]);
-        $imageName = null;
-        if ($request->hasFile('foto')) {
-            $imageName = time() . '.' . $request->foto->extension();
-            $request->foto->move(public_path('images'), $imageName);
-        }
+        
+            $request->validate([
+                'author' => 'required',
+                'title' => 'required',
+                'deskripsi' => 'required',
+                'foto' => 'image|mimes:jpeg,png,jpg,gif',
+                'foto1' => 'image|mimes:jpeg,png,jpg,gif',
+                'foto2' => 'image|mimes:jpeg,png,jpg,gif',
+                'foto3' => 'image|mimes:jpeg,png,jpg,gif',
+            ]);
+            $imageName = null;
+            if ($request->hasFile('foto')) {
+                $imageName = time() . '.' . $request->foto->extension();
+
+            }
+        
+            $imageName1 = null;
+            if ($request->hasFile('foto1')) {
+                $imageName1 = time() . 'foto1.' . $request->foto1->extension();
+
+            }
+        
+            $imageName2 = null;
+            if ($request->hasFile('foto2')) {
+                $imageName2 = time() . 'foto2.' . $request->foto2->extension();
+
+            }
+        
+            $imageName3 = null;
+            if ($request->hasFile('foto3')) {
+                $imageName3 = time() . 'foto3.' . $request->foto3->extension();
+
+            }
     
-        $imageName1 = null;
-        if ($request->hasFile('foto1')) {
-            $imageName1 = time() . 'foto1.' . $request->foto1->extension();
-            $request->foto1->move(public_path('images'), $imageName1);
-        }
+            // $user = auth()->user(); // Mendapatkan pengguna yang terotentikasi
+            // $author = $user->name; // Mengambil nama pengguna sebagai penulis
     
-        $imageName2 = null;
-        if ($request->hasFile('foto2')) {
-            $imageName2 = time() . 'foto2.' . $request->foto2->extension();
-            $request->foto2->move(public_path('images'), $imageName2);
-        }
+            $berita = new Berita([
+                'title' => $request->title,
+                'author' => $request->author,
+                // Menggunakan nama pengguna sebagai penulis
+                'deskripsi' => $request->deskripsi,
+                'content' => $request->content,
+                'foto' => '/images/' . $imageName,
+                'foto1' => '/images/' . $imageName1,
+                'foto2' => '/images/' . $imageName2,
+                'foto3' => '/images/' . $imageName3,
     
-        $imageName3 = null;
-        if ($request->hasFile('foto3')) {
-            $imageName3 = time() . 'foto3.' . $request->foto3->extension();
-            $request->foto3->move(public_path('images'), $imageName3);
+            ]);
+    
+    
+            $berita->save();
+            if ($imageName) {
+                $request->foto->move(public_path('images'), $imageName);
+            }
+    
+            if ($imageName1) {
+                $request->foto1->move(public_path('images'), $imageName1);
+            }
+            if ($imageName2) {
+                $request->foto2->move(public_path('images'), $imageName2);
+            }
+    
+            if ($imageName3) {
+                $request->foto3->move(public_path('images'), $imageName3);
+            }
+    
+            $jsonFile = public_path('data/data.json');
+    
+            $jsonData = [];
+            if (File::exists($jsonFile)) {
+                $jsonData = json_decode(File::get($jsonFile), true);
+            }
+    
+            $jsonData[] = [
+                'id' => Str::uuid()->toString(),
+                'title' => $request->title,
+                'author' => $request->author,
+                // Menggunakan nama pengguna sebagai penulis
+                'deskripsi' => $request->deskripsi,
+                'content' => $request->content,
+                'foto' => '/images/' . $imageName,
+                'foto1' => '/images/' . $imageName1,
+                'foto2' => '/images/' . $imageName2,
+                'foto3' => '/images/' . $imageName3,
+                'created_at' => now()->toDateTimeString(),
+                // Waktu pembuatan
+                'updated_at' => now()->toDateTimeString(),
+                // Waktu pembaruan
+    
+    
+            ];
+    
+            File::put($jsonFile, json_encode($jsonData));
+    
+            exec('git add .');
+            exec('git commit -m "Pesan commit otomatis"');
+            exec('git push origin main');
+    
+    
+    
+            return response()->json($berita);
+        
         }
 
-        // $user = auth()->user(); // Mendapatkan pengguna yang terotentikasi
-        // $author = $user->name; // Mengambil nama pengguna sebagai penulis
-
-        $berita = new Berita([
-            'title' => $request->title,
-            'author' => $request->author,
-            // Menggunakan nama pengguna sebagai penulis
-            'deskripsi' => $request->deskripsi,
-            'content' => $request->content,
-            'foto' => '/images/' . $imageName,
-            'foto1' => '/images/' . $imageName1,
-            'foto2' => '/images/' . $imageName2,
-            'foto3' => '/images/' . $imageName3,
-
-        ]);
-
-
-        $berita->save();
-
-        $jsonFile = public_path('data/data.json');
-
-        $jsonData = [];
-        if (File::exists($jsonFile)) {
-            $jsonData = json_decode(File::get($jsonFile), true);
-        }
-
-        $jsonData[] = [
-            'id' => Str::uuid()->toString(),
-            'title' => $request->title,
-            'author' => $request->author,
-            // Menggunakan nama pengguna sebagai penulis
-            'deskripsi' => $request->deskripsi,
-            'content' => $request->content,
-            'foto' => '/images/' . $imageName,
-            'foto1' => '/images/' . $imageName1,
-            'foto2' => '/images/' . $imageName2,
-            'foto3' => '/images/' . $imageName3,
-            'created_at' => now()->toDateTimeString(),
-            // Waktu pembuatan
-            'updated_at' => now()->toDateTimeString(),
-            // Waktu pembaruan
-
-
-        ];
-
-        File::put($jsonFile, json_encode($jsonData));
-
-        exec('git add .');
-        exec('git commit -m "Pesan commit otomatis"');
-        exec('git push origin main');
-
-
-
-        return response()->json($berita);
-
-    }
+    
 
 
     public function update(Request $request, $id)
