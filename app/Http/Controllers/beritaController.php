@@ -36,10 +36,10 @@ class beritaController extends Controller
             'author' => 'required',
             'title' => 'required',
             'deskripsi' => 'required',
-            'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'foto1' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'foto2' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'foto3' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'foto' => 'image|mimes:jpeg,png,jpg,gif',
+            'foto1' => 'image|mimes:jpeg,png,jpg,gif',
+            'foto2' => 'image|mimes:jpeg,png,jpg,gif',
+            'foto3' => 'image|mimes:jpeg,png,jpg,gif',
         ]);
         $imageName = null;
         if ($request->hasFile('foto')) {
