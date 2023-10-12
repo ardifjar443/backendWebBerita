@@ -12,9 +12,9 @@ return new class extends Migration {
     {
         Schema::create('beritas', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->nullable(false)->unique();
+            $table->text('title')->nullable(false)->unique();
             $table->string('author');
-            $table->string('deskripsi');
+            $table->text('deskripsi');
             $table->text('content')->nullable();
             $table->binary('foto')->nullable();
             $table->binary('foto1')->nullable();
