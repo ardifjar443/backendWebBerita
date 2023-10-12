@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Berita extends Model
 {
     use HasFactory;
-    protected $fillable = ['title', 'author', 'deskripsi', 'content', 'foto','foto1','foto2','foto3'];
+    protected $fillable = ['title', 'author', 'deskripsi', 'content', 'foto','foto1','foto2','foto3','dataArray'];
 
     public function user()
     {

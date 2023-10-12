@@ -65,6 +65,31 @@ class beritaController extends Controller
                 $imageName3 = time() . 'foto3.' . $request->foto3->extension();
 
             }
+
+            $dataArray = json_decode($request->input('dataArray'), true);
+
+            $combinedText = '';
+        
+            foreach ($dataArray['dataAkhir'] as $item) {
+                if (isset($item['text'])) {
+                    $combinedText .= '<p>' . $item['text'] . '</p> ';
+                }
+                if (isset($item['link'])){
+                    if($item['tipe'] === "gambarUrl"){
+                        $combinedText .= "<img src='" . $item['link'] . "' />";
+                    }else if($item['link'] === "gambar1"){
+                        $combinedText .= "<img src='https://raw.githubusercontent.com/ardifjar443/backendWebBerita/main/public/images/" . $imageName1 . "' />";
+                    }
+                    else if($item['link'] === "gambar2"){
+                        $combinedText .= "<img src='https://raw.githubusercontent.com/ardifjar443/backendWebBerita/main/public/images/" . $imageName2 . "' />";
+                    }
+                    else if($item['link'] === "gambar3"){
+                        $combinedText .= "<img src='https://raw.githubusercontent.com/ardifjar443/backendWebBerita/main/public/images/" . $imageName3 . "' />";
+                    }
+                }
+            }
+
+            
     
             // $user = auth()->user(); // Mendapatkan pengguna yang terotentikasi
             // $author = $user->name; // Mengambil nama pengguna sebagai penulis
@@ -74,7 +99,7 @@ class beritaController extends Controller
                 'author' => $request->author,
                 // Menggunakan nama pengguna sebagai penulis
                 'deskripsi' => $request->deskripsi,
-                'content' => $request->content,
+                'content' => $combinedText,
                 'foto' => '/images/' . $imageName,
                 'foto1' => '/images/' . $imageName1,
                 'foto2' => '/images/' . $imageName2,
@@ -112,11 +137,12 @@ class beritaController extends Controller
                 'author' => $request->author,
                 // Menggunakan nama pengguna sebagai penulis
                 'deskripsi' => $request->deskripsi,
-                'content' => $request->content,
+                'content' => $combinedText,
                 'foto' => '/images/' . $imageName,
                 'foto1' => '/images/' . $imageName1,
                 'foto2' => '/images/' . $imageName2,
                 'foto3' => '/images/' . $imageName3,
+                
                 'created_at' => now()->toDateTimeString(),
                 // Waktu pembuatan
                 'updated_at' => now()->toDateTimeString(),
