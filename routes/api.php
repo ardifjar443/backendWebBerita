@@ -4,6 +4,7 @@ use App\Http\Controllers\beritaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -15,16 +16,37 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
+
+
+Route::get('beritas', [beritaController::class, 'index']);
+
+
+
 
 Route::resource('berita', beritaController::class);
 
 use App\Http\Controllers\AuthController;
 
-Route::group(['prefix' => 'auth'], function () {
-    Route::post('login', [AuthController::class, 'login']);
-    Route::post('register', [AuthController::class, 'register']);
-    Route::post('logout', [AuthController::class, 'logout']);
+Route::group([
+
+    'middleware' => 'api',
+    'prefix' => 'auth'
+
+], function ($router) {
+
+    Route::post('login', [AuthController::class ,'login']);
+    Route::post('logout', [AuthController::class , 'logout']);
+    Route::post('refresh',[AuthController::class , 'refresh'] );
+    Route::post('me', [AuthController::class , 'me']);
+    Route::post('beritas', [beritaController::class, 'store']);
+    Route::put('beritas/{id}', [beritaController::class, 'update']);
+    Route::delete('beritas/{id}', [beritaController::class, 'destroy']);
+    Route::get('beritas', [beritaController::class, 'index']);
+
 });
+
+
+use App\Http\Controllers\Auth\RegisterController;
+
+Route::post('register', [RegisterController::class, 'register']);

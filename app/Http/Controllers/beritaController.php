@@ -91,12 +91,12 @@ class beritaController extends Controller
 
             
     
-            // $user = auth()->user(); // Mendapatkan pengguna yang terotentikasi
-            // $author = $user->name; // Mengambil nama pengguna sebagai penulis
+            $user = auth()->user(); // Mendapatkan pengguna yang terotentikasi
+            $author = $user->name; // Mengambil nama pengguna sebagai penulis
     
             $berita = new Berita([
                 'title' => $request->title,
-                'author' => $request->author,
+                'author' => $author,
                 // Menggunakan nama pengguna sebagai penulis
                 'deskripsi' => $request->deskripsi,
                 'content' => $combinedText,
@@ -124,38 +124,38 @@ class beritaController extends Controller
                 $request->foto3->move(public_path('images'), $imageName3);
             }
     
-            $jsonFile = public_path('data/data.json');
+            // $jsonFile = public_path('data/data.json');
     
-            $jsonData = [];
-            if (File::exists($jsonFile)) {
-                $jsonData = json_decode(File::get($jsonFile), true);
-            }
+            // $jsonData = [];
+            // if (File::exists($jsonFile)) {
+            //     $jsonData = json_decode(File::get($jsonFile), true);
+            // }
     
-            $jsonData[] = [
-                'id' => Str::uuid()->toString(),
-                'title' => $request->title,
-                'author' => $request->author,
-                // Menggunakan nama pengguna sebagai penulis
-                'deskripsi' => $request->deskripsi,
-                'content' => $combinedText,
-                'foto' => '/images/' . $imageName,
-                'foto1' => '/images/' . $imageName1,
-                'foto2' => '/images/' . $imageName2,
-                'foto3' => '/images/' . $imageName3,
+            // $jsonData[] = [
+            //     'id' => Str::uuid()->toString(),
+            //     'title' => $request->title,
+            //     'author' => $request->author,
+            //     // Menggunakan nama pengguna sebagai penulis
+            //     'deskripsi' => $request->deskripsi,
+            //     'content' => $combinedText,
+            //     'foto' => '/images/' . $imageName,
+            //     'foto1' => '/images/' . $imageName1,
+            //     'foto2' => '/images/' . $imageName2,
+            //     'foto3' => '/images/' . $imageName3,
                 
-                'created_at' => now()->toDateTimeString(),
-                // Waktu pembuatan
-                'updated_at' => now()->toDateTimeString(),
-                // Waktu pembaruan
+            //     'created_at' => now()->toDateTimeString(),
+            //     // Waktu pembuatan
+            //     'updated_at' => now()->toDateTimeString(),
+            //     // Waktu pembaruan
     
     
-            ];
+            // ];
     
-            File::put($jsonFile, json_encode($jsonData));
+            // File::put($jsonFile, json_encode($jsonData));
     
-            exec('git add .');
-            exec('git commit -m "Pesan commit otomatis"');
-            exec('git push origin main');
+            // exec('git add .');
+            // exec('git commit -m "Pesan commit otomatis"');
+            // exec('git push origin main');
     
     
     
