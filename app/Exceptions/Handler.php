@@ -46,6 +46,14 @@ class Handler extends ExceptionHandler
             return response()->json(['error' => 'Judul tidak boleh kosong'], 422);
         }
 
+        if ($exception instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
+            return response()->json(['error' => 'Token has expired'], 401);
+        } elseif ($exception instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) {
+            return response()->json(['error' => 'Token is invalid'], 401);
+        } elseif ($exception instanceof \Tymon\JWTAuth\Exceptions\JWTException) {
+            return response()->json(['error' => 'There was an error while decoding the token'], 401);
+        }
+    
 
         return parent::render($request, $exception);
     }
