@@ -42,7 +42,7 @@ Route::group([
     Route::post('beritas', [beritaController::class, 'store']);
     Route::put('beritas/{id}', [beritaController::class, 'update']);
     Route::delete('beritas/{id}', [beritaController::class, 'destroy']);
-    Route::get('beritas', [beritaController::class, 'index']);
+   
 
 });
 
