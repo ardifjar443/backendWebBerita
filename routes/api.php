@@ -20,11 +20,12 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('beritas', [beritaController::class, 'index']);
+Route::get('beritas/{id}', [beritaController::class, 'show']);
 
 
 
 
-Route::resource('berita', beritaController::class);
+// Route::resource('berita', beritaController::class);
 
 use App\Http\Controllers\AuthController;
 
