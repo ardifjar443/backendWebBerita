@@ -12,7 +12,7 @@ class CheckJwtToken
     public function handle($request, Closure $next)
     {
         // Periksa jika route adalah login atau register
-        if ($request->is('api/auth/login') || $request->is('api/auth/register')|| $request->is('api/beritas') ) {
+        if ($request->is('api/auth/login') || $request->is('api/register')|| $request->is('api/beritas') ) {
             return $next($request);
         }
     

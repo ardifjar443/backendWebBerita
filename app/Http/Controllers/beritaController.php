@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class beritaController extends Controller
 {
@@ -34,7 +35,6 @@ class beritaController extends Controller
     {
         
             $request->validate([
-                'author' => 'required',
                 'title' => 'required',
                 'deskripsi' => 'required',
                 'foto' => 'image|mimes:jpeg,png,jpg,gif',
@@ -91,7 +91,7 @@ class beritaController extends Controller
 
             
     
-            $user = auth()->user(); // Mendapatkan pengguna yang terotentikasi
+            $user = $request->user(); // Mendapatkan pengguna yang terotentikasi
             $author = $user->name; // Mengambil nama pengguna sebagai penulis
     
             $berita = new Berita([
